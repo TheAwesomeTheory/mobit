@@ -1,0 +1,36 @@
+{
+  "description": "Wire connections between XIAO nRF54L15 and BNO085 breakout for I2C operation",
+  "protocol": "I2C at 3.3V",
+  "wire_gauge": "30 AWG silicone",
+  "orientation": "Both boards chip-side UP. XIAO antenna/USB-C on top, BNO085 component side faces XIAO.",
+  "connections": [
+    {
+      "signal": "3V3",
+      "from": { "board": "xiao", "pin": "3V3" },
+      "to":   { "board": "bno085", "pin": "VCC" },
+      "wire_color": "red",
+      "notes": "BNO085 VIN accepts 3-5V; feeding 3.3V from XIAO regulator"
+    },
+    {
+      "signal": "GND",
+      "from": { "board": "xiao", "pin": "GND" },
+      "to":   { "board": "bno085", "pin": "GND" },
+      "wire_color": "black",
+      "notes": "Common ground"
+    },
+    {
+      "signal": "SDA",
+      "from": { "board": "xiao", "pin": "D4" },
+      "to":   { "board": "bno085", "pin": "SDA" },
+      "wire_color": "blue",
+      "notes": "I2C data, I2C0 on nRF54L15 (P1.10), BNO085 has 10K pull-up"
+    },
+    {
+      "signal": "SCL",
+      "from": { "board": "xiao", "pin": "D5" },
+      "to":   { "board": "bno085", "pin": "SCL" },
+      "wire_color": "yellow",
+      "notes": "I2C clock, I2C0 on nRF54L15 (P1.11), BNO085 has 10K pull-up"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[project]
+name = "dadovida"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cadquery>=2.7.0",
+    "cadquery-png-plugin>=1.1.0",
+    "cascadio>=0.0.17",
+    "numpy>=2.4.4",
+    "pathfinding3d>=0.7.2",
+    "pyglet<2",
+    "scipy>=1.17.1",
+    "trimesh>=4.11.5",
+]

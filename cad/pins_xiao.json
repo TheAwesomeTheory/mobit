@@ -1,0 +1,23 @@
+{
+  "board": "xiao_nrf54l15",
+  "unit": "mm",
+  "origin_note": "Board center, component side faces +Y, USB-C at negative Z end",
+  "coordinate_system": "STEP file native coordinates",
+  "pad_surface": "bottom (Y = -0.67), for soldering with board flipped component-side-down",
+  "pins": {
+    "D0":   { "x": -7.62, "y": -0.67, "z": -6.20, "function": "A0, GPIO",      "chip_pin": "P1.04" },
+    "D1":   { "x": -7.62, "y": -0.67, "z": -3.66, "function": "A1, GPIO",      "chip_pin": "P1.05" },
+    "D2":   { "x": -7.62, "y": -0.67, "z": -1.12, "function": "A2, GPIO",      "chip_pin": "P1.06" },
+    "D3":   { "x": -7.62, "y": -0.67, "z":  1.42, "function": "A3, GPIO",      "chip_pin": "P1.07" },
+    "D4":   { "x": -7.62, "y": -0.67, "z":  3.96, "function": "SDA (I2C0)",    "chip_pin": "P1.10" },
+    "D5":   { "x": -7.62, "y": -0.67, "z":  6.50, "function": "SCL (I2C0)",    "chip_pin": "P1.11" },
+    "D6":   { "x": -7.62, "y": -0.67, "z":  9.04, "function": "TX (UART)",     "chip_pin": "P2.08" },
+    "D10":  { "x":  7.62, "y": -0.67, "z": -6.20, "function": "MOSI (SPI)",    "chip_pin": "P2.02" },
+    "D9":   { "x":  7.62, "y": -0.67, "z": -3.66, "function": "MISO (SPI)",    "chip_pin": "P2.04" },
+    "D8":   { "x":  7.62, "y": -0.67, "z": -1.12, "function": "SCK (SPI)",     "chip_pin": "P2.01" },
+    "D7":   { "x":  7.62, "y": -0.67, "z":  1.42, "function": "RX (UART)",     "chip_pin": "P2.07" },
+    "3V3":  { "x":  7.62, "y": -0.67, "z":  3.96, "function": "3.3V regulated output" },
+    "GND":  { "x":  7.62, "y": -0.67, "z":  6.50, "function": "Ground" },
+    "5V":   { "x":  7.62, "y": -0.67, "z":  9.04, "function": "VUSB (5V)" }
+  }
+}

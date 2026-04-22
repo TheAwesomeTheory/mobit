@@ -1,0 +1,53 @@
+version: "3"
+
+tasks:
+  build:assembly:
+    desc: Build stacked assembly STEP file with pin markers
+    cmd: uv run python build_assembly.py
+
+  render:assembly:
+    desc: Render assembly PNGs (iso + top-down)
+    cmd: uv run python render_assembly.py
+
+  assembly:
+    desc: Build assembly STEP + render PNGs + open everything
+    deps: [build:assembly]
+    cmds:
+      - uv run python render_assembly.py
+      - open docs/assembly_iso.png docs/assembly_top.png
+      - |
+        PORT=8317
+        kill $(lsof -ti:$PORT) 2>/dev/null || true
+        sleep 0.3
+        cd cad && uv run python ../serve_cad.py $PORT &
+        sleep 0.5
+        open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida_stack.step"
+
+  build:rotations:
+    desc: Build all 4 rotation candidates side by side
+    cmd: uv run python build_rotations.py
+
+  view:rotations:
+    desc: View rotation comparison in 3dviewer.net
+    cmds:
+      - uv run python build_rotations.py
+      - |
+        PORT=8317
+        kill $(lsof -ti:$PORT) 2>/dev/null || true
+        sleep 0.3
+        cd cad && uv run python ../serve_cad.py $PORT &
+        sleep 0.5
+        open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida_rotations.step"
+
+  view:assembly:
+    desc: Open assembly STEP in 3dviewer.net via local server
+    cmds:
+      - |
+        PORT=8317
+        kill $(lsof -ti:$PORT) 2>/dev/null || true
+        sleep 0.3
+        cd cad && uv run python ../serve_cad.py $PORT &
+        sleep 0.5
+        open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida_stack.step"
+        echo "Server running on port $PORT — press Ctrl+C to stop"
+        wait

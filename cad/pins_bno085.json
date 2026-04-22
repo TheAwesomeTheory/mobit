@@ -1,0 +1,23 @@
+{
+  "board": "bno085_breakout",
+  "unit": "mm",
+  "origin_note": "Board corner (0,0,0), component side faces +Z, PCB top at Z=1.57",
+  "coordinate_system": "STEP file native coordinates",
+  "pad_surface": "through-hole, Z=1.57 (top of PCB)",
+  "i2c_address": "0x4A (default), 0x4B if DI pulled high",
+  "source": "Eagle board file Adafruit_BNO08x.brd, JP1/JP2 net assignments",
+  "pins": {
+    "VCC":  { "x":  6.35, "y":  2.54, "z": 1.57, "function": "Power input (VIN), 3-5V" },
+    "3V3":  { "x":  8.89, "y":  2.54, "z": 1.57, "function": "3.3V regulated output" },
+    "GND":  { "x": 11.43, "y":  2.54, "z": 1.57, "function": "Ground" },
+    "SCL":  { "x": 13.97, "y":  2.54, "z": 1.57, "function": "I2C clock (SCL/SCK/RX)" },
+    "SDA":  { "x": 16.51, "y":  2.54, "z": 1.57, "function": "I2C data (SDA/MISO/TX)" },
+    "INT":  { "x": 19.05, "y":  2.54, "z": 1.57, "function": "Interrupt, active low" },
+    "BOOT": { "x":  6.35, "y": 20.32, "z": 1.57, "function": "Bootloader pin" },
+    "PS0":  { "x":  8.89, "y": 20.32, "z": 1.57, "function": "Protocol select 0" },
+    "PS1":  { "x": 11.43, "y": 20.32, "z": 1.57, "function": "Protocol select 1" },
+    "RST":  { "x": 13.97, "y": 20.32, "z": 1.57, "function": "Reset, active low" },
+    "DI":   { "x": 16.51, "y": 20.32, "z": 1.57, "function": "Data in (MOSI/SPI)" },
+    "CS":   { "x": 19.05, "y": 20.32, "z": 1.57, "function": "Chip select (SPI)" }
+  }
+}

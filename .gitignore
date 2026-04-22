@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# macOS
+.DS_Store
+
+# Generated STEP assemblies (large, rebuild from source)
+cad/dadovida_stack.step
+cad/dadovida_routed.step
+cad/dadovida_rotations.step
+cad/dadovida_pins_validate.step
