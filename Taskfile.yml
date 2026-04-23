@@ -32,6 +32,38 @@ tasks:
         sleep 0.5
         open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida.glb"
 
+  references:
+    desc: Build reference comparison (Lingo, coin cells, etc.)
+    cmd: uv run python scripts/references.py
+
+  compare:lingo:
+    desc: DadoVida vs Lingo side-by-side comparison
+    cmd: uv run python scripts/compare_lingo.py
+
+  view:lingo:
+    desc: View DadoVida vs Lingo in 3dviewer.net
+    deps: [compare:lingo]
+    cmds:
+      - |
+        PORT=8317
+        kill $(lsof -ti:$PORT) 2>/dev/null || true
+        sleep 0.3
+        cd cad && uv run python -m mobit.serve $PORT &
+        sleep 0.5
+        open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida_vs_lingo.glb"
+
+  view:references:
+    desc: View reference comparison in 3dviewer.net
+    deps: [references]
+    cmds:
+      - |
+        PORT=8317
+        kill $(lsof -ti:$PORT) 2>/dev/null || true
+        sleep 0.3
+        cd cad && uv run python -m mobit.serve $PORT &
+        sleep 0.5
+        open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida_references.glb"
+
   view:step:
     desc: Open STEP assembly in 3dviewer.net
     cmds:

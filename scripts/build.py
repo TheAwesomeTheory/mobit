@@ -199,4 +199,30 @@ glb_shapes.append(("battery", "battery", "*", battery_pos))
 for wire_name, wire_shape, wire_color in wire_shapes:
     glb_shapes.append((wire_name, "wires", wire_name, wire_shape))
 
-export_glb(glb_shapes, output_path="cad/dadovida.glb")
+# Pin labels — placed slightly above each pin position
+LABEL_SIZE = 1.0
+LABEL_OFFSET = 1.0  # mm above the pin
+
+pin_labels = []
+
+# XIAO I2C pins (chip side)
+for pin_name in ["D4", "D5", "3V3", "GND"]:
+    pos = xiao_assy_pins[pin_name]
+    pin_labels.append((pin_name, (pos[0], pos[1], pos[2] - LABEL_OFFSET), LABEL_SIZE))
+
+# XIAO battery pins (non-chip side)
+for pin_name in ["BAT+", "BAT-"]:
+    pos = xiao_bat_pins[pin_name]
+    pin_labels.append((pin_name, (pos[0], pos[1], pos[2] + LABEL_OFFSET), LABEL_SIZE))
+
+# BNO085 pins
+for pin_name in ["VCC", "GND", "SDA", "SCL"]:
+    pos = bno_assy_pins[pin_name]
+    pin_labels.append((pin_name, (pos[0], pos[1], pos[2] + LABEL_OFFSET), LABEL_SIZE))
+
+# Battery pins
+for pin_name in ["BAT+", "BAT-"]:
+    pos = battery_assy_pins[pin_name]
+    pin_labels.append((f"bat:{pin_name}", (pos[0] + LABEL_OFFSET, pos[1], pos[2]), LABEL_SIZE))
+
+export_glb(glb_shapes, output_path="cad/dadovida.glb", labels=pin_labels)

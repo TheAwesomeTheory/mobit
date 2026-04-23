@@ -45,5 +45,8 @@
     "wire_GND": "wire_black",
     "wire_SDA": "wire_blue",
     "wire_SCL": "wire_yellow"
+  },
+  "references": {
+    "*": "reference_clear"
   }
 }

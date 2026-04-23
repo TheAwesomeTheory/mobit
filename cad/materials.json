@@ -2,100 +2,191 @@
   "_doc": "PBR material library. Each material has baseColor (RGBA 0-1), metallic (0-1), roughness (0-1).",
   "materials": {
     "pcb_green": {
-      "baseColor": [0.05, 0.30, 0.07, 1.0],
+      "baseColor": [
+        0.05,
+        0.3,
+        0.07,
+        1.0
+      ],
       "metallic": 0.0,
       "roughness": 0.7,
       "description": "Green PCB solder mask"
     },
     "pcb_dark": {
-      "baseColor": [0.04, 0.04, 0.04, 1.0],
+      "baseColor": [
+        0.04,
+        0.04,
+        0.04,
+        1.0
+      ],
       "metallic": 0.0,
       "roughness": 0.6,
       "description": "Dark/black PCB"
     },
     "ic_black": {
-      "baseColor": [0.02, 0.02, 0.02, 1.0],
+      "baseColor": [
+        0.02,
+        0.02,
+        0.02,
+        1.0
+      ],
       "metallic": 0.0,
       "roughness": 0.4,
       "description": "Black plastic IC package (QFN, TSSOP, SOT)"
     },
     "passive_gray": {
-      "baseColor": [0.35, 0.35, 0.35, 1.0],
+      "baseColor": [
+        0.35,
+        0.35,
+        0.35,
+        1.0
+      ],
       "metallic": 0.0,
       "roughness": 0.5,
       "description": "Gray ceramic passive (capacitors, resistors)"
     },
     "connector_white": {
-      "baseColor": [0.90, 0.90, 0.85, 1.0],
+      "baseColor": [
+        0.9,
+        0.9,
+        0.85,
+        1.0
+      ],
       "metallic": 0.0,
       "roughness": 0.4,
       "description": "White plastic connector housing (JST, STEMMA-QT)"
     },
     "metal_shield": {
-      "baseColor": [0.75, 0.75, 0.75, 1.0],
+      "baseColor": [
+        0.75,
+        0.75,
+        0.75,
+        1.0
+      ],
       "metallic": 0.9,
       "roughness": 0.3,
       "description": "Metal RF shield / can"
     },
     "gold_pad": {
-      "baseColor": [0.83, 0.69, 0.22, 1.0],
+      "baseColor": [
+        0.83,
+        0.69,
+        0.22,
+        1.0
+      ],
       "metallic": 0.9,
       "roughness": 0.2,
       "description": "Gold-plated pad or castellated edge"
     },
     "solder_lead": {
-      "baseColor": [0.70, 0.70, 0.65, 1.0],
+      "baseColor": [
+        0.7,
+        0.7,
+        0.65,
+        1.0
+      ],
       "metallic": 0.8,
       "roughness": 0.3,
       "description": "Solder / lead finish"
     },
     "usb_connector": {
-      "baseColor": [0.65, 0.65, 0.65, 1.0],
+      "baseColor": [
+        0.65,
+        0.65,
+        0.65,
+        1.0
+      ],
       "metallic": 0.95,
       "roughness": 0.15,
       "description": "USB-C connector metal shell"
     },
     "crystal": {
-      "baseColor": [0.35, 0.35, 0.35, 1.0],
+      "baseColor": [
+        0.35,
+        0.35,
+        0.35,
+        1.0
+      ],
       "metallic": 0.7,
       "roughness": 0.3,
       "description": "Crystal oscillator metal can"
     },
     "led": {
-      "baseColor": [0.90, 0.90, 0.80, 1.0],
+      "baseColor": [
+        0.9,
+        0.9,
+        0.8,
+        1.0
+      ],
       "metallic": 0.0,
       "roughness": 0.2,
       "description": "LED lens (clear/white)"
     },
     "battery_pouch": {
-      "baseColor": [0.15, 0.15, 0.20, 1.0],
+      "baseColor": [
+        0.15,
+        0.15,
+        0.2,
+        1.0
+      ],
       "metallic": 0.3,
       "roughness": 0.5,
       "description": "LiPo battery pouch (dark blue/black mylar)"
     },
     "wire_red": {
-      "baseColor": [0.90, 0.05, 0.05, 1.0],
+      "baseColor": [
+        0.9,
+        0.05,
+        0.05,
+        1.0
+      ],
       "metallic": 0.0,
       "roughness": 0.6,
       "description": "Red silicone wire (3V3 power)"
     },
     "wire_black": {
-      "baseColor": [0.05, 0.05, 0.05, 1.0],
+      "baseColor": [
+        0.05,
+        0.05,
+        0.05,
+        1.0
+      ],
       "metallic": 0.0,
       "roughness": 0.6,
       "description": "Black silicone wire (GND)"
     },
     "wire_blue": {
-      "baseColor": [0.05, 0.20, 0.90, 1.0],
+      "baseColor": [
+        0.05,
+        0.2,
+        0.9,
+        1.0
+      ],
       "metallic": 0.0,
       "roughness": 0.6,
       "description": "Blue silicone wire (SDA)"
     },
     "wire_yellow": {
-      "baseColor": [0.95, 0.80, 0.05, 1.0],
+      "baseColor": [
+        0.95,
+        0.8,
+        0.05,
+        1.0
+      ],
       "metallic": 0.0,
       "roughness": 0.6,
       "description": "Yellow silicone wire (SCL)"
+    },
+    "reference_clear": {
+      "baseColor": [
+        0.6,
+        0.8,
+        1.0,
+        0.5
+      ],
+      "metallic": 0.0,
+      "roughness": 0.3,
+      "description": "Translucent blue reference shape"
     }
   }
 }

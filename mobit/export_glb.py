@@ -72,11 +72,48 @@ def cq_shape_to_trimesh_with_material(shape, material=None):
     return mesh
 
 
+def create_label(text, position, font_size=1.0, thickness=0.1):
+    """Create 3D extruded text at a position, facing up (+Z).
+
+    Returns a trimesh mesh with white material, or None on failure.
+    """
+    import cadquery as cq
+
+    try:
+        label = cq.Workplane("XY").text(text, font_size, thickness)
+        bb = label.val().BoundingBox()
+        # Center text horizontally, then move to position
+        label = label.translate((
+            position[0] - bb.xlen / 2 - bb.xmin,
+            position[1] - bb.ylen / 2 - bb.ymin,
+            position[2] - bb.zmin,
+        ))
+
+        vertices, faces = label.val().tessellate(0.05)
+        v_array = np.array([(v.x, v.y, v.z) for v in vertices])
+        f_array = np.array(faces)
+        mesh = trimesh.Trimesh(vertices=v_array, faces=f_array)
+
+        white_mat = PBRMaterial(
+            name=f"label_{text}",
+            baseColorFactor=[1.0, 1.0, 1.0, 1.0],
+            metallicFactor=0.0,
+            roughnessFactor=0.9,
+        )
+        mesh.visual = trimesh.visual.TextureVisuals(material=white_mat)
+        return mesh
+    except Exception as e:
+        print(f"  Warning: could not create label '{text}': {e}")
+        return None
+
+
 def export_glb(
     assembly_shapes,
     output_path="cad/dadovida.glb",
     materials_path="cad/materials.json",
     assignments_path="cad/material_assignments.json",
+    labels=None,
+    cached_scene=None,
 ):
     """Export named shapes to GLB with PBR materials.
 
@@ -111,6 +148,20 @@ def export_glb(
                 scene.add_geometry(mesh, node_name=node_name)
         except Exception as e:
             print(f"  Warning: could not export {node_name}: {e}")
+
+    # Merge cached scene if provided (e.g., pre-built assembly)
+    if cached_scene is not None:
+        for mesh_name, mesh_geom in cached_scene.geometry.items():
+            scene.add_geometry(mesh_geom, node_name=mesh_name)
+
+    # Add text labels if provided
+    # labels: list of (text, (x, y, z), font_size)
+    if labels:
+        print(f"  Adding {len(labels)} labels...")
+        for text, position, font_size in labels:
+            mesh = create_label(text, position, font_size=font_size)
+            if mesh is not None and len(mesh.faces) > 0:
+                scene.add_geometry(mesh, node_name=f"label_{text}")
 
     scene.export(output_path)
     print(f"Exported: {output_path} ({len(scene.geometry)} meshes)")
