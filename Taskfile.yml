@@ -1,53 +1,44 @@
 version: "3"
 
 tasks:
-  build:assembly:
-    desc: Build stacked assembly STEP file with pin markers
-    cmd: uv run python build_assembly.py
+  build:
+    desc: Build assembly STEP + GLB with routed wires
+    cmd: uv run python scripts/build.py
 
-  render:assembly:
-    desc: Render assembly PNGs (iso + top-down)
-    cmd: uv run python render_assembly.py
+  validate:
+    desc: Validate pin positions with colored spheres
+    cmd: uv run python scripts/validate.py
 
-  assembly:
-    desc: Build assembly STEP + render PNGs + open everything
-    deps: [build:assembly]
-    cmds:
-      - uv run python render_assembly.py
-      - open docs/assembly_iso.png docs/assembly_top.png
-      - |
-        PORT=8317
-        kill $(lsof -ti:$PORT) 2>/dev/null || true
-        sleep 0.3
-        cd cad && uv run python ../serve_cad.py $PORT &
-        sleep 0.5
-        open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida_stack.step"
+  optimize:
+    desc: Find optimal board rotation to minimize wire length
+    cmd: uv run python scripts/optimize.py
 
-  build:rotations:
-    desc: Build all 4 rotation candidates side by side
-    cmd: uv run python build_rotations.py
+  distance:
+    desc: Measure distance between two pins (e.g., task distance -- xiao D4 bno085 SDA)
+    cmd: uv run python scripts/distance.py {{.CLI_ARGS}}
 
-  view:rotations:
-    desc: View rotation comparison in 3dviewer.net
-    cmds:
-      - uv run python build_rotations.py
-      - |
-        PORT=8317
-        kill $(lsof -ti:$PORT) 2>/dev/null || true
-        sleep 0.3
-        cd cad && uv run python ../serve_cad.py $PORT &
-        sleep 0.5
-        open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida_rotations.step"
+  render:
+    desc: Render assembly PNGs
+    cmd: uv run python scripts/render.py
 
-  view:assembly:
-    desc: Open assembly STEP in 3dviewer.net via local server
+  view:
+    desc: Open assembly in 3dviewer.net
     cmds:
       - |
         PORT=8317
         kill $(lsof -ti:$PORT) 2>/dev/null || true
         sleep 0.3
-        cd cad && uv run python ../serve_cad.py $PORT &
+        cd cad && uv run python -m mobit.serve $PORT &
         sleep 0.5
-        open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida_stack.step"
-        echo "Server running on port $PORT — press Ctrl+C to stop"
-        wait
+        open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida.glb"
+
+  view:step:
+    desc: Open STEP assembly in 3dviewer.net
+    cmds:
+      - |
+        PORT=8317
+        kill $(lsof -ti:$PORT) 2>/dev/null || true
+        sleep 0.3
+        cd cad && uv run python -m mobit.serve $PORT &
+        sleep 0.5
+        open "https://3dviewer.net/#model=http://localhost:$PORT/dadovida_routed.step"

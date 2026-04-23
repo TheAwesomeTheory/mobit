@@ -7,7 +7,7 @@ Red = non-chip side (opposite face)
 import cadquery as cq
 import numpy as np
 
-from geometry import rot_x, rot_z, load_pins, BoardInScene
+from mobit.geometry import rot_x, rot_z, load_pins, BoardInScene
 
 # Load geometry
 bno = cq.importers.importStep("cad/bno085.step")

@@ -21,6 +21,24 @@ def rot_z(d: float) -> np.ndarray:
     return np.array([[c, -s, 0], [s, c, 0], [0, 0, 1]])
 
 
+def import_step_with_colors(path: str) -> "cq.Assembly":
+    """Import a STEP file preserving per-part colors.
+
+    Returns a CadQuery Assembly with named, colored sub-objects.
+    Falls back to plain import if the file has no assembly structure.
+    """
+    import cadquery as cq
+    from cadquery.occ_impl.importers.assembly import importStep as _importStep
+    assy = cq.Assembly()
+    try:
+        _importStep(assy, path)
+    except ValueError:
+        # File doesn't have assembly structure — plain import
+        shape = cq.importers.importStep(path)
+        assy.add(shape)
+    return assy
+
+
 def load_pins(path: str) -> dict:
     with open(path) as f:
         return json.load(f)["pins"]

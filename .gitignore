@@ -17,3 +17,5 @@ cad/dadovida_stack.step
 cad/dadovida_routed.step
 cad/dadovida_rotations.step
 cad/dadovida_pins_validate.step
+cad/test_colors.step
+cad/*.glb

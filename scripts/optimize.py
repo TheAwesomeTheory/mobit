@@ -13,24 +13,7 @@ import statistics
 
 import numpy as np
 
-
-# --- Geometry primitives ---
-
-def rot_x(d):
-    r = math.radians(d); c = math.cos(r); s = math.sin(r)
-    return np.array([[1,0,0],[0,c,-s],[0,s,c]])
-
-def rot_y(d):
-    r = math.radians(d); c = math.cos(r); s = math.sin(r)
-    return np.array([[c,0,s],[0,1,0],[-s,0,c]])
-
-def rot_z(d):
-    r = math.radians(d); c = math.cos(r); s = math.sin(r)
-    return np.array([[c,-s,0],[s,c,0],[0,0,1]])
-
-
-def pin_to_assembly(pin, rotation, translation):
-    return rotation @ np.array([pin["x"], pin["y"], pin["z"]]) + translation
+from mobit.geometry import rot_x, rot_y, rot_z, pin_to_assembly, load_pins, load_connections
 
 
 def segments_cross_2d(a1, a2, b1, b2):
@@ -116,12 +99,9 @@ def print_results(scored, board_a_name, board_b_name):
 
 def main():
     # Load pin data
-    with open("cad/pins_xiao.json") as f:
-        pins_a = json.load(f)["pins"]
-    with open("cad/pins_bno085.json") as f:
-        pins_b = json.load(f)["pins"]
-    with open("cad/connections.json") as f:
-        connections = json.load(f)["connections"]
+    pins_a = load_pins("cad/pins_xiao.json")
+    pins_b = load_pins("cad/pins_bno085.json")
+    connections = load_connections("cad/connections.json")
 
     # Board B (BNO085) transform — fixed
     transform_b = (np.eye(3), np.array([-12.70, -11.43, 4.30]))

@@ -1,0 +1,49 @@
+{
+  "_doc": "Maps component names (from STEP files) to material names (from materials.json). Use '*' prefix for pattern matching.",
+  "bno085": {
+    "Board:1": "pcb_green",
+    "PCB Component": "pcb_green",
+    "BNO080:U1": "ic_black",
+    "TSSOP16:U3": "ic_black",
+    "SOT23-5:U2": "ic_black",
+    "SOT363:Q2": "ic_black",
+    "0603-NO:*": "passive_gray",
+    "0805-NO:*": "passive_gray",
+    "RESPACK_4X0603:*": "passive_gray",
+    "JST_SH4:*": "connector_white",
+    "CHIPLED_0603_NOOUTLINE:D1": "led",
+    "XTAL3215:X1": "crystal"
+  },
+  "xiao": {
+    "XIAO nRF54l15_PCB:1": "pcb_dark",
+    "XIAO nRF54l15_pad:1": "gold_pad",
+    "USB_type_C_smd_12ps v1:1": "usb_connector",
+    "shield:1": "metal_shield",
+    "Component10:1": "passive_gray",
+    "Component11:1": "ic_black",
+    "Component12:1": "solder_lead",
+    "Component13:1": "solder_lead",
+    "Component14:1": "solder_lead",
+    "Component15:1": "passive_gray",
+    "Component16:1": "metal_shield",
+    "Component17:1": "passive_gray",
+    "Component18:1": "solder_lead",
+    "Component19:1": "metal_shield",
+    "Component20:1": "solder_lead",
+    "Component21:1": "solder_lead",
+    "Component22:1": "solder_lead",
+    "Component23:1": "metal_shield",
+    "Component24:1": "ic_black",
+    "Component25:1": "solder_lead",
+    "Component26:1": "solder_lead"
+  },
+  "battery": {
+    "*": "battery_pouch"
+  },
+  "wires": {
+    "wire_3V3": "wire_red",
+    "wire_GND": "wire_black",
+    "wire_SDA": "wire_blue",
+    "wire_SCL": "wire_yellow"
+  }
+}

@@ -3,13 +3,18 @@
 import cadquery as cq
 import numpy as np
 
-from geometry import rot_x, rot_z, load_pins, load_connections, BoardInScene
-from wire_router import route_wires
+from mobit.geometry import rot_x, rot_z, load_pins, load_connections, BoardInScene, import_step_with_colors
+from mobit.wire_router import route_wires
 
-# Load geometry
+# Load geometry (plain import for transforms/bounding boxes)
 bno = cq.importers.importStep("cad/bno085.step")
 xiao = cq.importers.importStep("cad/xiao_nrf54l15.step")
 bb_bno = bno.val().BoundingBox()
+
+# Color-preserving imports for the final assembly
+bno_colored = import_step_with_colors("cad/bno085.step")
+xiao_colored = import_step_with_colors("cad/xiao_nrf54l15.step")
+battery_colored = import_step_with_colors("cad/lipo_150mah.step")
 
 # Stack config: 180° chip-down, -2mm gap
 BATT_H = 3.8
@@ -71,19 +76,30 @@ bno_assy_pins = bno_board.all_pins(chip_side=True)
 
 connections = load_connections("cad/connections.json")
 
-# Build assembly
+# Build assembly with color-preserving sub-assemblies
 assembly = cq.Assembly()
-assembly.add(bno_centered, name="bno085")
-assembly.add(xiao_pos, name="xiao")
 
-battery = cq.importers.importStep("cad/lipo_150mah.step")
-bb_bat = battery.val().BoundingBox()
-battery_pos = battery.translate((
+# BNO085 with original colors
+bno_loc = cq.Location(cq.Vector(-bb_bno.xlen / 2, -bb_bno.ylen / 2, bno_z_start))
+assembly.add(bno_colored, name="bno085", loc=bno_loc)
+
+# XIAO with original colors (rotate then translate)
+xiao_loc = (
+    cq.Location(cq.Vector(-xiao_cx, -xiao_cy, bno_top + GAP - bb_xr.zmin))
+    * cq.Location(cq.Vector(0, 0, 0), cq.Vector(0, 0, 1), 180)
+    * cq.Location(cq.Vector(0, 0, 0), cq.Vector(1, 0, 0), -90)
+)
+assembly.add(xiao_colored, name="xiao", loc=xiao_loc)
+
+# Battery with original colors
+battery_plain = cq.importers.importStep("cad/lipo_150mah.step")
+bb_bat = battery_plain.val().BoundingBox()
+bat_loc = cq.Location(cq.Vector(
     -(bb_bat.xmin + bb_bat.xmax) / 2,
     -(bb_bat.ymin + bb_bat.ymax) / 2,
     -bb_bat.zmin,
 ))
-assembly.add(battery_pos, name="battery")
+assembly.add(battery_colored, name="battery", loc=bat_loc)
 
 # Route wires — exit straight down from XIAO, enter straight down into BNO085
 print("\n=== Routing Wires ===")
@@ -105,3 +121,39 @@ for name, shape, color in wire_shapes:
 
 assembly.save("cad/dadovida_routed.step")
 print(f"\nExported: cad/dadovida_routed.step")
+
+# --- GLB export with PBR materials ---
+from mobit.export_glb import export_glb
+
+print("\n=== GLB Export ===")
+glb_shapes = []
+
+
+def collect_board_parts(colored_assy, board_key, board_loc):
+    """Iterate a colored assembly, apply board transform, collect for GLB."""
+    parts = []
+    for shape, name, loc, col in colored_assy:
+        # Strip the top-level prefix (e.g., "PCB Component/Board:1" → "Board:1")
+        comp_name = name.split("/")[-1] if "/" in name else name
+        # Apply component location then board location
+        moved_shape = shape.moved(loc).moved(board_loc)
+        wp = cq.Workplane().add(moved_shape)
+        parts.append((f"{board_key}/{comp_name}", board_key, comp_name, wp))
+    return parts
+
+
+glb_shapes.extend(collect_board_parts(bno_colored, "bno085", bno_loc))
+glb_shapes.extend(collect_board_parts(xiao_colored, "xiao", xiao_loc))
+
+# Battery
+glb_shapes.append(("battery", "battery", "*", battery_plain.translate((
+    -(bb_bat.xmin + bb_bat.xmax) / 2,
+    -(bb_bat.ymin + bb_bat.ymax) / 2,
+    -bb_bat.zmin,
+))))
+
+# Wires
+for wire_name, wire_shape, wire_color in wire_shapes:
+    glb_shapes.append((wire_name, "wires", wire_name, wire_shape))
+
+export_glb(glb_shapes, output_path="cad/dadovida.glb")
