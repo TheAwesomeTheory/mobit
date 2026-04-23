@@ -1,0 +1,11 @@
+{
+  "board": "battery",
+  "unit": "mm",
+  "origin_note": "Battery corner (0,0,0). Wires exit from the short edge (along Y), at half height.",
+  "coordinate_system": "STEP file native coordinates",
+  "pad_surface": "Wire exit at short edge, mid-height of battery pouch",
+  "pins": {
+    "BAT+": { "x": 26.02, "y": 9.06,  "z": 1.90, "function": "Positive terminal (red wire), exits short edge" },
+    "BAT-": { "x": 26.02, "y": 10.69, "z": 1.90, "function": "Negative terminal (black wire), exits short edge" }
+  }
+}

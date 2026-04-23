@@ -64,28 +64,54 @@ bno_board = BoardInScene(
     non_chip_side_z=bno_nonchip_z,  # PCB bottom
 )
 
+# Battery board
+battery = cq.importers.importStep("cad/lipo_150mah.step")
+bb_bat = battery.val().BoundingBox()
+T_bat = np.array([-(bb_bat.xmin + bb_bat.xmax) / 2, -(bb_bat.ymin + bb_bat.ymax) / 2, -bb_bat.zmin])
+battery_pos = battery.translate(tuple(T_bat))
+
+battery_board = BoardInScene(
+    name="battery",
+    pins=load_pins("cad/pins_battery.json"),
+    rotation=np.eye(3),
+    translation=T_bat,
+    chip_side_z=1.90 + T_bat[2],      # mid-height (wire exit point)
+    non_chip_side_z=1.90 + T_bat[2],  # same — no top/bottom distinction
+)
+
 # Build assembly
 assembly = cq.Assembly()
 assembly.add(bno_centered, name="bno085", color=cq.Color("purple"))
 assembly.add(xiao_pos, name="xiao", color=cq.Color("green"))
+assembly.add(battery_pos, name="battery", color=cq.Color("gray"))
 
 SPHERE_RADIUS = 0.4
 
 print("=== XIAO pins ===")
-for board in [xiao_board, bno_board]:
+for board in [xiao_board, bno_board, battery_board]:
     print(f"\n{board.name}: chip_side_z={board.chip_side_z:.2f}, non_chip_side_z={board.non_chip_side_z:.2f}")
-    for pin_name in board.pins:
-        # Blue sphere on chip side
-        chip_pos = board.get_pin(pin_name, chip_side=True)
-        sphere_chip = cq.Workplane("XY").sphere(SPHERE_RADIUS).translate(tuple(chip_pos))
-        assembly.add(sphere_chip, name=f"{board.name}_{pin_name}_chip",
-                     color=cq.Color(0.0, 0.3, 1.0, 1.0))
+    # Pick colors: battery gets green, boards get blue/red
+    is_single_sided = (board.chip_side_z == board.non_chip_side_z)
 
-        # Red sphere on non-chip side
-        non_chip_pos = board.get_pin(pin_name, chip_side=False)
-        sphere_non = cq.Workplane("XY").sphere(SPHERE_RADIUS).translate(tuple(non_chip_pos))
-        assembly.add(sphere_non, name=f"{board.name}_{pin_name}_nonchip",
-                     color=cq.Color(1.0, 0.0, 0.0, 1.0))
+    for pin_name in board.pins:
+        if is_single_sided:
+            # Single point — green sphere
+            pos = board.get_pin(pin_name, chip_side=True)
+            sphere = cq.Workplane("XY").sphere(SPHERE_RADIUS).translate(tuple(pos))
+            assembly.add(sphere, name=f"{board.name}_{pin_name}",
+                         color=cq.Color(0.0, 1.0, 0.0, 1.0))
+        else:
+            # Blue sphere on chip side
+            chip_pos = board.get_pin(pin_name, chip_side=True)
+            sphere_chip = cq.Workplane("XY").sphere(SPHERE_RADIUS).translate(tuple(chip_pos))
+            assembly.add(sphere_chip, name=f"{board.name}_{pin_name}_chip",
+                         color=cq.Color(0.0, 0.3, 1.0, 1.0))
+
+            # Red sphere on non-chip side
+            non_chip_pos = board.get_pin(pin_name, chip_side=False)
+            sphere_non = cq.Workplane("XY").sphere(SPHERE_RADIUS).translate(tuple(non_chip_pos))
+            assembly.add(sphere_non, name=f"{board.name}_{pin_name}_nonchip",
+                         color=cq.Color(1.0, 0.0, 0.0, 1.0))
 
         print(f"  {pin_name:6s}  chip=({chip_pos[0]:7.2f},{chip_pos[1]:7.2f},{chip_pos[2]:7.2f})  "
               f"non-chip=({non_chip_pos[0]:7.2f},{non_chip_pos[1]:7.2f},{non_chip_pos[2]:7.2f})")

@@ -229,6 +229,8 @@ DEFAULT_WIRE_COLORS = {
     "GND": (0.15, 0.15, 0.15),
     "SDA": (0.0, 0.3, 1.0),
     "SCL": (1.0, 0.85, 0.0),
+    "BAT+": (0.9, 0.0, 0.0),
+    "BAT-": (0.1, 0.1, 0.1),
 }
 
 
@@ -244,6 +246,7 @@ def route_wires(
     exit_dir_a=None,
     entry_dir_b=None,
     exit_distance=2.0,
+    padding=3.0,
 ):
     """Route wires between two boards using 3D pathfinding.
 
@@ -270,7 +273,7 @@ def route_wires(
     # Build occupancy grid
     print("  Voxelizing...")
     obstacle_grid, origin, res = build_occupancy_grid(
-        meshes, resolution=grid_resolution, clearance=clearance, wire_radius=wire_radius
+        meshes, resolution=grid_resolution, clearance=clearance, wire_radius=wire_radius, padding=padding
     )
     print(f"  Grid size: {obstacle_grid.shape}, {obstacle_grid.sum()} blocked voxels")
 

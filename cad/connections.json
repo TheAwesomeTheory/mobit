@@ -1,8 +1,7 @@
 {
-  "description": "Wire connections between XIAO nRF54L15 and BNO085 breakout for I2C operation",
-  "protocol": "I2C at 3.3V",
+  "description": "Wire connections for DadoVida dev kit #1: I2C + battery",
   "wire_gauge": "30 AWG silicone",
-  "orientation": "Both boards chip-side UP. XIAO antenna/USB-C on top, BNO085 component side faces XIAO.",
+  "orientation": "Chip-to-chip stacking. XIAO chip-down, BNO085 chip-up.",
   "connections": [
     {
       "signal": "3V3",
@@ -31,6 +30,20 @@
       "to":   { "board": "bno085", "pin": "SCL" },
       "wire_color": "yellow",
       "notes": "I2C clock, I2C0 on nRF54L15 (P1.11), BNO085 has 10K pull-up"
+    },
+    {
+      "signal": "BAT+",
+      "from": { "board": "battery", "pin": "BAT+" },
+      "to":   { "board": "xiao", "pin": "BAT+" },
+      "wire_color": "red",
+      "notes": "Battery positive to XIAO VBAT pad"
+    },
+    {
+      "signal": "BAT-",
+      "from": { "board": "battery", "pin": "BAT-" },
+      "to":   { "board": "xiao", "pin": "BAT-" },
+      "wire_color": "black",
+      "notes": "Battery negative to XIAO GND pad"
     }
   ]
 }

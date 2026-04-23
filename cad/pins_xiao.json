@@ -18,6 +18,8 @@
     "D7":   { "x":  7.62, "y": -0.67, "z":  1.42, "function": "RX (UART)",     "chip_pin": "P2.07" },
     "3V3":  { "x":  7.62, "y": -0.67, "z":  3.96, "function": "3.3V regulated output" },
     "GND":  { "x":  7.62, "y": -0.67, "z":  6.50, "function": "Ground" },
-    "5V":   { "x":  7.62, "y": -0.67, "z":  9.04, "function": "VUSB (5V)" }
+    "5V":   { "x":  7.62, "y": -0.67, "z":  9.04, "function": "VUSB (5V)" },
+    "BAT+": { "x": -1.23, "y": -0.67, "z": -7.28, "function": "Battery positive (VBAT)" },
+    "BAT-": { "x":  1.30, "y": -0.67, "z": -7.27, "function": "Battery negative (GND)" }
   }
 }
